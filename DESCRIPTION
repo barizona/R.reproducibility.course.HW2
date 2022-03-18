@@ -1,0 +1,16 @@
+Package: R.reproducibility.course.HW2
+Title: Home work for the R reproducibility course
+Version: 0.0.0.9000
+Authors@R:
+    person("Eszter", "Ari", , "arieszter@gmail.com", role = c("aut", "cre"))
+Description: The package downloads, checks and analyses the "Chocolate rating" data from the TidyTueasday repo.
+License: MIT + file LICENSE
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports: bookdown,
+    here
+Suggests: devtools,
+    git2r

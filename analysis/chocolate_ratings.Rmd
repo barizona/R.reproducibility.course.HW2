@@ -1,0 +1,73 @@
+---
+title: "Chocolate Ratings"
+author: "Eszter Ari"
+date: "3/18/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(kableExtra)
+library(pander)
+library(sylly)
+panderOptions("table.style", "multiline")
+panderOptions("table.split.table", 150)
+panderOptions("use.hyphening", TRUE)
+panderOptions('big.mark', ",")
+```
+
+# Input data
+
+Download and save the raw data by using the `tidyverse` `R` package.
+
+```{r save_raw}
+library(tidyverse)
+library(magrittr)
+chocolate <- read_csv(
+  "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-18/chocolate.csv")
+chocolate %>% 
+  write_csv(here::here("data/raw/chocolate.csv"))
+```
+
+Let's check the content.
+
+```{r content_check}
+chocolate %>% 
+  slice(1:5) %>% 
+  mutate_all(~paste('\\scriptsize', .)) %>%
+  setNames(paste('\\scriptsize', names(.))) %>% 
+  pander(caption = "Head of the binding site table")
+```
+
+```{r}
+str(chocolate)
+```
+
+## Let's see if the "cocoa_percent" and the "rating" correlate each other.
+
+Converting "cocoa_percent" to numbers.
+
+```{r to_nr}
+chocolate %<>% 
+  mutate(cocoa_percent = str_remove_all(cocoa_percent, "%")) %>% 
+  mutate(cocoa_percent = as.numeric(cocoa_percent))
+```
+
+**Pearson correlation:**
+
+```{r correlation}
+cor(chocolate$cocoa_percent, chocolate$rating)
+```
+
+**Linear regression:**
+
+```{r lm}
+lm(rating ~ cocoa_percent, data = chocolate) %>% 
+  summary()
+
+chocolate %>% 
+  ggplot(aes(x = cocoa_percent, y = rating)) +
+  geom_smooth(method = lm, formula = y ~ x, color = "steelblue") + # regression
+  geom_point(color = "coral", size = 3)
+```
+

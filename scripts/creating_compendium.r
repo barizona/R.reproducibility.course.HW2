@@ -1,0 +1,5 @@
+rrtools::use_compendium()
+usethis::use_mit_license(copyright_holder = "Eszter Ari")
+usethis::use_mit_license()
+rrtools::use_readme_rmd()
+rrtools::use_analysis()
